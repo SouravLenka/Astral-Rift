@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEditor.SceneManagement;
@@ -34,15 +35,28 @@ public static class ProjectBootstrapperEditor
         // Create Managers
         CreateManager<GameManager>("GameManager");
         CreateManager<AudioManager>("AudioManager", go => {
-            var src = go.AddComponent<AudioSource>(); src.playOnAwake = false; src.loop = true;
+            var music = go.AddComponent<AudioSource>(); music.playOnAwake = false; music.loop = true;
             var sfx = go.AddComponent<AudioSource>(); sfx.playOnAwake = false;
             var ambient = go.AddComponent<AudioSource>(); ambient.playOnAwake = false;
             var ui = go.AddComponent<AudioSource>(); ui.playOnAwake = false;
+
+            var audioManager = go.GetComponent<AudioManager>();
+            var musicField = typeof(AudioManager).GetField("musicSource", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var sfxField = typeof(AudioManager).GetField("sfxSource", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var ambientField = typeof(AudioManager).GetField("ambientSource", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var uiField = typeof(AudioManager).GetField("uiSource", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+
+            musicField?.SetValue(audioManager, music);
+            sfxField?.SetValue(audioManager, sfx);
+            ambientField?.SetValue(audioManager, ambient);
+            uiField?.SetValue(audioManager, ui);
         });
         CreateManager<UIManager>("UIManager");
         CreateManager<AstraRift.Managers.InputManager>("InputManager");
         CreateManager<AstraRift.Managers.SceneTransitionManager>("SceneTransitionManager");
         CreateManager<SaveManager>("SaveManager");
+        CreateManager<AstraRift.PowerUps.PowerUpManager>("PowerUpManager");
+        CreateManager<AstraRift.Player.ReviveSystem>("ReviveSystem");
 
         // Pool Manager
         var poolGO = new GameObject("PoolManager");
@@ -124,9 +138,24 @@ public static class ProjectBootstrapperEditor
         var spawner = spawnerGO.AddComponent<AstraRift.Enemy.EnemySpawner>();
         spawner.GetType().GetField("enemyPrefab", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public)?.SetValue(spawner, enemyPrefab);
 
+        // Add WaveManager and wire the spawner
+        var waveGO = new GameObject("WaveManager");
+        var waveManager = waveGO.AddComponent<AstraRift.Game.WaveManager>();
+        Object.DontDestroyOnLoad(waveGO);
+        var spawnerField = typeof(AstraRift.Game.WaveManager).GetField("spawner", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+        spawnerField?.SetValue(waveManager, spawner);
+
         // Save scene to Assets/Scenes/Bootstrap.unity
         System.IO.Directory.CreateDirectory("Assets/Scenes");
         EditorSceneManager.SaveScene(scene, "Assets/Scenes/Bootstrap.unity");
+
+        EditorBuildSettingsScene[] enabledScenes = EditorBuildSettings.scenes;
+        if (!enabledScenes.Any(s => s.path == "Assets/Scenes/Bootstrap.unity"))
+        {
+            var newScene = new EditorBuildSettingsScene("Assets/Scenes/Bootstrap.unity", true);
+            var scenes = enabledScenes.Append(newScene).ToArray();
+            EditorBuildSettings.scenes = scenes;
+        }
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();

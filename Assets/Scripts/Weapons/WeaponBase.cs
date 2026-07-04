@@ -13,6 +13,9 @@ namespace AstraRift.Weapons
 
         private float cooldownTimer;
         private Player.PlayerController controller;
+        private float temporarySpread;
+        private float temporaryFireRateMultiplier = 1f;
+        private float temporaryDamageMultiplier = 1f;
 
         private void Awake()
         {
@@ -45,7 +48,8 @@ namespace AstraRift.Weapons
             if (data == null || cooldownTimer > 0f) return;
 
             FireOnce();
-            cooldownTimer = 1f / Mathf.Max(0.0001f, data.fireRate);
+            var effectiveFireRate = data.fireRate * temporaryFireRateMultiplier;
+            cooldownTimer = 1f / Mathf.Max(0.0001f, effectiveFireRate);
         }
 
         private void FireOnce()
@@ -55,15 +59,47 @@ namespace AstraRift.Weapons
             var rot = firePoint.rotation;
             var dir = firePoint.up; // assuming up is forward
 
+            var effectiveSpread = Mathf.Max(0f, data.spreadAngle + temporarySpread);
+            var finalDamage = Mathf.Max(1, Mathf.RoundToInt(data.damage * temporaryDamageMultiplier));
+
             var instance = PoolManager.Instance.Spawn(data.projectilePrefab, firePoint.position, rot);
             var proj = instance.GetComponent<Projectile>();
             if (proj != null)
             {
-                // apply spread
-                var angle = (data.spreadAngle / 2f) * (Random.value * 2f - 1f);
+                var angle = (effectiveSpread / 2f) * (Random.value * 2f - 1f);
                 var rotatedDir = Quaternion.Euler(0, 0, angle) * dir;
-                proj.Initialize(rotatedDir, data.projectileSpeed, data.damage, projectileLifetime, data.projectilePrefab);
+                proj.Initialize(rotatedDir, data.projectileSpeed, finalDamage, projectileLifetime, data.projectilePrefab);
             }
+        }
+
+        public void SetTemporarySpread(float spread)
+        {
+            temporarySpread = spread;
+        }
+
+        public void ResetTemporarySpread()
+        {
+            temporarySpread = 0f;
+        }
+
+        public void SetTemporaryFireRateMultiplier(float multiplier)
+        {
+            temporaryFireRateMultiplier = Mathf.Max(0.01f, multiplier);
+        }
+
+        public void ResetTemporaryFireRateMultiplier()
+        {
+            temporaryFireRateMultiplier = 1f;
+        }
+
+        public void SetTemporaryDamageMultiplier(float multiplier)
+        {
+            temporaryDamageMultiplier = Mathf.Max(0.01f, multiplier);
+        }
+
+        public void ResetTemporaryDamageMultiplier()
+        {
+            temporaryDamageMultiplier = 1f;
         }
     }
 }

@@ -94,6 +94,12 @@ namespace AstraRift.Player
             isInvulnerable = value;
         }
 
+        public void RestoreShield(int amount)
+        {
+            if (amount <= 0 || stats == null) return;
+            currentShield = Mathf.Clamp(currentShield + amount, 0, stats.maxShield);
+        }
+
         private void Respawn()
         {
             currentHealth = stats.maxHealth;

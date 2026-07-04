@@ -15,11 +15,17 @@ namespace AstraRift.Player
         public Rect playArea = new Rect(-12f, -6f, 24f, 12f);
 
         private PlayerHealth healthComp;
+        private float temporarySpeedMultiplier = 1f;
 
         private Vector2 inputMove;
         private Vector2 velocity;
         private bool isDashing;
         private float dashCooldownTimer;
+
+        private void Awake()
+        {
+            healthComp = GetComponent<PlayerHealth>();
+        }
 
         private void OnEnable()
         {
@@ -68,7 +74,7 @@ namespace AstraRift.Player
 
             if (!isDashing)
             {
-                var targetVel = inputMove.normalized * stats.moveSpeed;
+                var targetVel = inputMove.normalized * stats.moveSpeed * temporarySpeedMultiplier;
                 velocity = Vector2.MoveTowards(velocity, targetVel, stats.acceleration * Time.deltaTime);
                 transform.Translate((Vector3)velocity * Time.deltaTime);
 
@@ -97,8 +103,6 @@ namespace AstraRift.Player
             isDashing = true;
             dashCooldownTimer = stats.dashCooldown;
 
-            // grant temporary invulnerability via PlayerHealth
-            if (healthComp == null) healthComp = GetComponent<PlayerHealth>();
             healthComp?.SetInvulnerable(true);
 
             var dir = inputMove.sqrMagnitude > 0.01f ? inputMove.normalized : transform.up;
@@ -119,8 +123,17 @@ namespace AstraRift.Player
             transform.position = end;
             isDashing = false;
 
-            // remove invulnerability
             healthComp?.SetInvulnerable(false);
+        }
+
+        public void SetTemporarySpeedMultiplier(float multiplier)
+        {
+            temporarySpeedMultiplier = Mathf.Max(0.01f, multiplier);
+        }
+
+        public void ResetTemporarySpeedMultiplier()
+        {
+            temporarySpeedMultiplier = 1f;
         }
     }
 

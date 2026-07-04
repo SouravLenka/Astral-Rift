@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using AstraRift.Game;
 using AstraRift.Managers;
+using AstraRift.Player;
+using AstraRift.PowerUps;
 
 namespace AstraRift.Core
 {
@@ -50,6 +53,24 @@ namespace AstraRift.Core
             {
                 var sm = new GameObject("SaveManager");
                 sm.AddComponent<SaveManager>();
+            }
+
+            if (WaveManager.Instance == null)
+            {
+                var wm = new GameObject("WaveManager");
+                wm.AddComponent<WaveManager>();
+            }
+
+            if (PowerUpManager.Instance == null)
+            {
+                var pm = new GameObject("PowerUpManager");
+                pm.AddComponent<PowerUpManager>();
+            }
+
+            if (FindObjectOfType<ReviveSystem>() == null)
+            {
+                var rs = new GameObject("ReviveSystem");
+                rs.AddComponent<ReviveSystem>();
             }
         }
 
