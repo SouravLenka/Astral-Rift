@@ -18,37 +18,74 @@ namespace AstraRift.Player
             health = GetComponent<PlayerHealth>();
         }
 
+        private InputActionMap actionMap;
+        private InputAction shootAction;
+        private InputAction ultimateAction;
+        private InputAction interactAction;
+        private bool actionsBound;
+
         private void OnEnable()
         {
-            var mapName = playerIndex == 1 ? "PlayerOne" : "PlayerTwo";
-            var map = InputManager.Instance?.GetActionMap(mapName);
-            map?.Enable();
+            BindInput();
+        }
 
-            var shoot = map?.FindAction("Shoot");
-            shoot?.performed += OnShoot;
-
-            var ult = map?.FindAction("Ultimate");
-            ult?.performed += OnUltimate;
-
-            var interact = map?.FindAction("Interact");
-            interact?.performed += OnInteract;
+        private void Start()
+        {
+            if (!actionsBound)
+                BindInput();
         }
 
         private void OnDisable()
         {
+            UnbindInput();
+        }
+
+        private void BindInput()
+        {
+            if (actionsBound)
+                return;
+
+            if (InputManager.Instance == null)
+                return;
+
             var mapName = playerIndex == 1 ? "PlayerOne" : "PlayerTwo";
-            var map = InputManager.Instance?.GetActionMap(mapName);
+            actionMap = InputManager.Instance.GetActionMap(mapName);
+            if (actionMap == null)
+                return;
 
-            var shoot = map?.FindAction("Shoot");
-            if (shoot != null) shoot.performed -= OnShoot;
+            actionMap.Enable();
+            shootAction = actionMap.FindAction("Shoot");
+            ultimateAction = actionMap.FindAction("Ultimate");
+            interactAction = actionMap.FindAction("Interact");
 
-            var ult = map?.FindAction("Ultimate");
-            if (ult != null) ult.performed -= OnUltimate;
+            if (shootAction != null)
+                shootAction.performed += OnShoot;
+            if (ultimateAction != null)
+                ultimateAction.performed += OnUltimate;
+            if (interactAction != null)
+                interactAction.performed += OnInteract;
 
-            var interact = map?.FindAction("Interact");
-            if (interact != null) interact.performed -= OnInteract;
+            actionsBound = true;
+        }
 
-            map?.Disable();
+        private void UnbindInput()
+        {
+            if (!actionsBound)
+                return;
+
+            if (shootAction != null)
+                shootAction.performed -= OnShoot;
+            if (ultimateAction != null)
+                ultimateAction.performed -= OnUltimate;
+            if (interactAction != null)
+                interactAction.performed -= OnInteract;
+
+            actionMap?.Disable();
+            actionMap = null;
+            shootAction = null;
+            ultimateAction = null;
+            interactAction = null;
+            actionsBound = false;
         }
 
         private void OnShoot(InputAction.CallbackContext ctx)

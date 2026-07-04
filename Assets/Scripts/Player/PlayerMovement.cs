@@ -22,6 +22,11 @@ namespace AstraRift.Player
         private bool isDashing;
         private float dashCooldownTimer;
 
+        private InputActionMap actionMap;
+        private InputAction moveAction;
+        private InputAction dashAction;
+        private bool inputBound;
+
         private void Awake()
         {
             healthComp = GetComponent<PlayerHealth>();
@@ -29,26 +34,64 @@ namespace AstraRift.Player
 
         private void OnEnable()
         {
-            var mapName = playerIndex == 1 ? "PlayerOne" : "PlayerTwo";
-            var map = AstraRift.Managers.InputManager.Instance?.GetActionMap(mapName);
-            map?.Enable();
-            var moveAction = map?.FindAction("Move");
-            moveAction?.performed += OnMovePerformed;
-            moveAction?.canceled += OnMoveCanceled;
-            var dashAction = map?.FindAction("Dash");
-            dashAction?.performed += OnDashPerformed;
+            BindInput();
+        }
+
+        private void Start()
+        {
+            if (!inputBound)
+                BindInput();
         }
 
         private void OnDisable()
         {
+            UnbindInput();
+        }
+
+        private void BindInput()
+        {
+            if (inputBound)
+                return;
+
             var mapName = playerIndex == 1 ? "PlayerOne" : "PlayerTwo";
-            var map = AstraRift.Managers.InputManager.Instance?.GetActionMap(mapName);
-            var moveAction = map?.FindAction("Move");
-            moveAction?.performed -= OnMovePerformed;
-            moveAction?.canceled -= OnMoveCanceled;
-            var dashAction = map?.FindAction("Dash");
-            dashAction?.performed -= OnDashPerformed;
-            map?.Disable();
+            actionMap = AstraRift.Managers.InputManager.Instance?.GetActionMap(mapName);
+            if (actionMap == null)
+                return;
+
+            actionMap.Enable();
+            moveAction = actionMap.FindAction("Move");
+            dashAction = actionMap.FindAction("Dash");
+
+            if (moveAction != null)
+            {
+                moveAction.performed += OnMovePerformed;
+                moveAction.canceled += OnMoveCanceled;
+            }
+
+            if (dashAction != null)
+                dashAction.performed += OnDashPerformed;
+
+            inputBound = true;
+        }
+
+        private void UnbindInput()
+        {
+            if (!inputBound)
+                return;
+
+            if (moveAction != null)
+            {
+                moveAction.performed -= OnMovePerformed;
+                moveAction.canceled -= OnMoveCanceled;
+            }
+            if (dashAction != null)
+                dashAction.performed -= OnDashPerformed;
+
+            actionMap?.Disable();
+            actionMap = null;
+            moveAction = null;
+            dashAction = null;
+            inputBound = false;
         }
 
         private void OnMovePerformed(InputAction.CallbackContext ctx)

@@ -19,7 +19,22 @@ namespace AstraRift.Player
 
         private void Awake()
         {
-            if (stats == null) return;
+            if (stats != null)
+            {
+                InitializeFromStats();
+            }
+        }
+
+        private void Start()
+        {
+            if (!isIncapacitated && stats != null && currentHealth == 0 && currentShield == 0 && livesLeft == 0)
+            {
+                InitializeFromStats();
+            }
+        }
+
+        private void InitializeFromStats()
+        {
             currentHealth = stats.maxHealth;
             currentShield = stats.maxShield;
             livesLeft = stats.lives;

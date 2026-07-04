@@ -23,7 +23,7 @@ public static class ProjectBootstrapperEditor
         var bootstrap = bootstrapGO.AddComponent(typeof(AstraRift.Core.Bootstrapper));
 
         // Ensure Resources/Input/PlayerControls.inputactions exists
-        var inputText = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Resources/Input/PlayerControls.inputactions.json");
+        var inputText = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Resources/Input/PlayerControls.inputactions");
         if (inputText != null)
         {
             var comp = bootstrapGO.GetComponent(typeof(AstraRift.Core.Bootstrapper));
