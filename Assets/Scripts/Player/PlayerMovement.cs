@@ -10,6 +10,11 @@ namespace AstraRift.Player
     {
         public int playerIndex = 1; // 1 or 2
         [SerializeField] private PlayerShipStats stats;
+        [Header("Movement Area")]
+        [Tooltip("World-space rectangle representing allowed play area: x,y,width,height")]
+        public Rect playArea = new Rect(-12f, -6f, 24f, 12f);
+
+        private PlayerHealth healthComp;
 
         private Vector2 inputMove;
         private Vector2 velocity;
@@ -67,6 +72,12 @@ namespace AstraRift.Player
                 velocity = Vector2.MoveTowards(velocity, targetVel, stats.acceleration * Time.deltaTime);
                 transform.Translate((Vector3)velocity * Time.deltaTime);
 
+                // enforce play area bounds
+                var pos = transform.position;
+                pos.x = Mathf.Clamp(pos.x, playArea.xMin, playArea.xMax);
+                pos.y = Mathf.Clamp(pos.y, playArea.yMin, playArea.yMax);
+                transform.position = pos;
+
                 if (inputMove.sqrMagnitude > 0.01f)
                 {
                     var angle = Mathf.Atan2(inputMove.y, inputMove.x) * Mathf.Rad2Deg;
@@ -86,6 +97,10 @@ namespace AstraRift.Player
             isDashing = true;
             dashCooldownTimer = stats.dashCooldown;
 
+            // grant temporary invulnerability via PlayerHealth
+            if (healthComp == null) healthComp = GetComponent<PlayerHealth>();
+            healthComp?.SetInvulnerable(true);
+
             var dir = inputMove.sqrMagnitude > 0.01f ? inputMove.normalized : transform.up;
             var start = transform.position;
             var end = start + (Vector3)dir * stats.dashDistance;
@@ -103,6 +118,9 @@ namespace AstraRift.Player
 
             transform.position = end;
             isDashing = false;
+
+            // remove invulnerability
+            healthComp?.SetInvulnerable(false);
         }
     }
 

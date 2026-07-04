@@ -7,6 +7,12 @@ namespace AstraRift.Player
     {
         [SerializeField] private PlayerShipStats stats;
 
+        [Header("Revive & Invulnerability")]
+        [SerializeField] private float incapacitatedReviveWindow = 10f;
+
+        private bool isInvulnerable = false;
+        private bool isIncapacitated = false;
+
         private int currentHealth;
         private int currentShield;
         private int livesLeft;
@@ -22,6 +28,7 @@ namespace AstraRift.Player
         public void ApplyDamage(int amount)
         {
             if (amount <= 0) return;
+            if (isInvulnerable || isIncapacitated) return;
 
             if (currentShield > 0)
             {
@@ -43,12 +50,48 @@ namespace AstraRift.Player
                     }
                     else
                     {
-                        Die();
+                        StartIncapacitatedState();
                     }
                 }
             }
 
             MessageBroker.Publish(new PlayerDamagedEvent(this, amount));
+        }
+
+        private void StartIncapacitatedState()
+        {
+            isIncapacitated = true;
+            MessageBroker.Publish(new PlayerIncapacitatedEvent(this));
+            // visually indicate incapacitated - disable visuals or play animation in the scene
+            StartCoroutine(IncapacitatedTimer());
+        }
+
+        private System.Collections.IEnumerator IncapacitatedTimer()
+        {
+            var timer = incapacitatedReviveWindow;
+            while (timer > 0f)
+            {
+                timer -= Time.deltaTime;
+                yield return null;
+                if (!isIncapacitated) yield break; // revived
+            }
+
+            // time expired -> full death
+            Die();
+        }
+
+        public void Revive()
+        {
+            if (!isIncapacitated) return;
+            isIncapacitated = false;
+            currentHealth = stats != null ? stats.maxHealth : 100;
+            currentShield = stats != null ? stats.maxShield : 0;
+            MessageBroker.Publish(new PlayerRevivedEvent(this));
+        }
+
+        public void SetInvulnerable(bool value)
+        {
+            isInvulnerable = value;
         }
 
         private void Respawn()
