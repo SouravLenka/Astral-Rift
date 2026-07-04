@@ -1,0 +1,75 @@
+{
+  "name": "PlayerControls",
+  "maps": [
+    {
+      "name": "PlayerOne",
+      "id": "player-one-map",
+      "actions": [
+        { "name": "Move", "type": "Value", "id": "p1-move", "expectedControlType": "Vector2" },
+        { "name": "Shoot", "type": "Button", "id": "p1-shoot" },
+        { "name": "Dash", "type": "Button", "id": "p1-dash" },
+        { "name": "Ultimate", "type": "Button", "id": "p1-ult" },
+        { "name": "Interact", "type": "Button", "id": "p1-interact" }
+      ],
+      "bindings": [
+        { "path": "<Keyboard>/w", "groups": "Keyboard&Mouse", "action": "Move", "isComposite": false, "name": "" },
+        { "path": "<Keyboard>/a", "groups": "Keyboard&Mouse", "action": "Move", "isPartOfComposite": true, "name": "left" },
+        { "path": "<Keyboard>/s", "groups": "Keyboard&Mouse", "action": "Move", "isPartOfComposite": true, "name": "down" },
+        { "path": "<Keyboard>/d", "groups": "Keyboard&Mouse", "action": "Move", "isPartOfComposite": true, "name": "right" },
+        { "path": "<Keyboard>/w", "groups": "Keyboard&Mouse", "action": "Move", "isPartOfComposite": true, "name": "up" },
+        { "path": "<Keyboard>/leftCtrl", "groups": "Keyboard&Mouse", "action": "Shoot" },
+        { "path": "<Keyboard>/leftShift", "groups": "Keyboard&Mouse", "action": "Dash" },
+        { "path": "<Keyboard>/q", "groups": "Keyboard&Mouse", "action": "Ultimate" },
+        { "path": "<Keyboard>/f", "groups": "Keyboard&Mouse", "action": "Interact" }
+      ]
+    },
+    {
+      "name": "PlayerTwo",
+      "id": "player-two-map",
+      "actions": [
+        { "name": "Move", "type": "Value", "id": "p2-move", "expectedControlType": "Vector2" },
+        { "name": "Shoot", "type": "Button", "id": "p2-shoot" },
+        { "name": "Dash", "type": "Button", "id": "p2-dash" },
+        { "name": "Ultimate", "type": "Button", "id": "p2-ult" },
+        { "name": "Interact", "type": "Button", "id": "p2-interact" }
+      ],
+      "bindings": [
+        { "path": "<Keyboard>/upArrow", "groups": "Keyboard&Mouse", "action": "Move" },
+        { "path": "<Keyboard>/leftArrow", "groups": "Keyboard&Mouse", "action": "Move" },
+        { "path": "<Keyboard>/downArrow", "groups": "Keyboard&Mouse", "action": "Move" },
+        { "path": "<Keyboard>/rightArrow", "groups": "Keyboard&Mouse", "action": "Move" },
+        { "path": "<Keyboard>/rightCtrl", "groups": "Keyboard&Mouse", "action": "Shoot" },
+        { "path": "<Keyboard>/rightShift", "groups": "Keyboard&Mouse", "action": "Dash" },
+        { "path": "<Keyboard>/e", "groups": "Keyboard&Mouse", "action": "Ultimate" },
+        { "path": "<Keyboard>/enter", "groups": "Keyboard&Mouse", "action": "Interact" }
+      ]
+    },
+    {
+      "name": "UI",
+      "id": "ui-map",
+      "actions": [
+        { "name": "Navigate", "type": "Value", "id": "ui-nav", "expectedControlType": "Vector2" },
+        { "name": "Submit", "type": "Button", "id": "ui-submit" },
+        { "name": "Cancel", "type": "Button", "id": "ui-cancel" }
+      ],
+      "bindings": [
+        { "path": "<Keyboard>/wasd", "action": "Navigate" },
+        { "path": "<Keyboard>/enter", "action": "Submit" },
+        { "path": "<Keyboard>/escape", "action": "Cancel" }
+      ]
+    },
+    {
+      "name": "Debug",
+      "id": "debug-map",
+      "actions": [
+        { "name": "ToggleGodMode", "type": "Button", "id": "dbg-god" },
+        { "name": "NextWave", "type": "Button", "id": "dbg-next" }
+      ],
+      "bindings": [
+        { "path": "<Keyboard>/g", "action": "ToggleGodMode" },
+        { "path": "<Keyboard>/n", "action": "NextWave" }
+      ]
+    }
+  ],
+  "controlSchemes": []
+}

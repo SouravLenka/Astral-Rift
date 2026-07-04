@@ -1,0 +1,49 @@
+# Ignore Unity generated files
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Mm]emoryCaptures/
+UserSettings/
+
+# Ignore crash reports
+sysinfo/
+
+# Ignore auto-generated files
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.opendb
+*.VC.db
+*.pidb.*
+*.DS_Store
+
+# Ignore Unity cache server
+/[Cc]ache/**
+
+# Ignore package manager folders
+Packages/packages-lock.json
+
+# Ignore local environment files
+.vscode/
+.idea/
+*.swp
+*.tmp
+
+# Ignore build artifacts
+*.apk
+*.aab
+*.xcodeproj
+
+# Ignore asset store tools
+Assets/AssetStoreTools*
