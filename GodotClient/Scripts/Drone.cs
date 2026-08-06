@@ -1,7 +1,5 @@
 using Godot;
 
-namespace AstralRift;
-
 public partial class Drone : Node2D
 {
     private float _health = 2;

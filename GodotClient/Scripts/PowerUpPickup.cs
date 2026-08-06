@@ -1,7 +1,5 @@
 using Godot;
 
-namespace AstralRift;
-
 public enum PowerUpType { TripleShot, RapidFire, SpeedBoost, DoubleDamage }
 
 public partial class PowerUpPickup : Node2D

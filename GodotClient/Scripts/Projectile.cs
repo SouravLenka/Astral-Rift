@@ -1,7 +1,5 @@
 using Godot;
 
-namespace AstralRift;
-
 public partial class Projectile : Node2D
 {
     private readonly Vector2 _direction;

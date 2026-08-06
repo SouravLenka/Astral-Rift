@@ -47,3 +47,17 @@ Packages/packages-lock.json
 
 # Ignore asset store tools
 Assets/AssetStoreTools*
+
+# Godot editor/import/cache files
+GodotClient/.godot/
+GodotClient/.godot/
+
+# Godot C# generated project files and local build output
+GodotClient/.mono/
+GodotClient/bin/
+GodotClient/obj/
+GodotClient/*.sln
+GodotClient/*.csproj.user
+
+# Godot local editor state and generated metadata
+*.godot-editor

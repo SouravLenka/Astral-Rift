@@ -1,7 +1,5 @@
 using Godot;
 
-namespace AstralRift;
-
 public partial class Pilot : Node2D
 {
     private readonly Color _color;
