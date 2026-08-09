@@ -1,0 +1,72 @@
+[gd_scene load_steps=2 format=3 uid="uid://cooldownpanel_p1"]
+
+[ext_resource type="Script" path="res://Scripts/UI/CooldownPanel.gd" id="1"]
+
+[node name="BottomLeftPanel" type="HBoxContainer"]
+layout_mode = 3
+anchors_preset = 6
+anchor_left = 0.0
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -80.0
+offset_bottom = -16.0
+script = ExtResource("1")
+player_id = 0
+theme_override_constants/separation = 8
+
+[node name="DashCooldown" type="VBoxContainer" parent="."]
+layout_mode = 2
+custom_minimum_size = Vector2(56, 0)
+theme_override_constants/separation = 3
+
+[node name="IconLabel" type="Label" parent="DashCooldown"]
+layout_mode = 2
+horizontal_alignment = 1
+text = "MOVE"
+theme_override_font_sizes/font_size = 10
+theme_override_colors/font_color = Color(0.31, 0.875, 1.0, 1)
+
+[node name="Bar" type="ProgressBar" parent="DashCooldown"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 8)
+visible = false
+max_value = 100
+value = 100
+show_percentage = false
+
+[node name="Label" type="Label" parent="DashCooldown"]
+layout_mode = 2
+horizontal_alignment = 1
+text = "W A S D"
+theme_override_font_sizes/font_size = 10
+
+[node name="UltCooldown" type="VBoxContainer" parent="."]
+layout_mode = 2
+custom_minimum_size = Vector2(60, 0)
+theme_override_constants/separation = 3
+
+[node name="IconLabel" type="Label" parent="UltCooldown"]
+layout_mode = 2
+horizontal_alignment = 1
+text = "FIRE"
+theme_override_font_sizes/font_size = 10
+theme_override_colors/font_color = Color(1, 0.549, 0.259, 1)
+
+[node name="Bar" type="ProgressBar" parent="UltCooldown"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 8)
+visible = false
+max_value = 100
+value = 100
+show_percentage = false
+
+[node name="Label" type="Label" parent="UltCooldown"]
+layout_mode = 2
+horizontal_alignment = 1
+text = "SPACE"
+theme_override_font_sizes/font_size = 10
+
+[node name="PowerUps" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 4

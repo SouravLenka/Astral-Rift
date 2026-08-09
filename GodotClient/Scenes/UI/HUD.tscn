@@ -1,0 +1,124 @@
+[gd_scene load_steps=8 format=3 uid="uid://hud_root_scene"]
+
+[ext_resource type="Script" path="res://Scripts/UI/HUD.gd" id="1"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/PlayerHUD.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/TopCenterPanel.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/BottomCenterPanel.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/BottomLeftPanel.tscn" id="5"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/BottomRightPanel.tscn" id="6"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/BossHUD.tscn" id="7"]
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1")
+
+[node name="RootControl" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+; ─── Player 1 HUD (top-left) ───────────────────────────────
+[node name="PlayerHUD1" parent="RootControl" instance=ExtResource("2")]
+layout_mode = 1
+anchors_preset = 1
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 266.0
+offset_bottom = 180.0
+player_id = 0
+
+; ─── Player 2 HUD (top-right) ──────────────────────────────
+[node name="PlayerHUD2" parent="RootControl" instance=ExtResource("2")]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+offset_left = -266.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 180.0
+player_id = 1
+
+; ─── Top Center (wave / objective) ─────────────────────────
+[node name="TopCenterPanel" parent="RootControl" instance=ExtResource("3")]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+
+; ─── Bottom Center (notifications) ─────────────────────────
+[node name="BottomCenterPanel" parent="RootControl" instance=ExtResource("4")]
+
+; ─── Bottom Left cooldowns (P1) ────────────────────────────
+[node name="BottomLeftPanel" parent="RootControl" instance=ExtResource("5")]
+
+; ─── Bottom Right cooldowns (P2) ───────────────────────────
+[node name="BottomRightPanel" parent="RootControl" instance=ExtResource("6")]
+
+; ─── Boss HUD (bottom, hidden until boss spawns) ───────────
+[node name="BossHUD" parent="RootControl" instance=ExtResource("7")]
+
+[node name="MissionBrief" type="Control" parent="RootControl"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -245.0
+offset_top = -120.0
+offset_right = 245.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Panel" type="PanelContainer" parent="RootControl/MissionBrief"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="RootControl/MissionBrief/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 18
+
+[node name="VBox" type="VBoxContainer" parent="RootControl/MissionBrief/Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Eyebrow" type="Label" parent="RootControl/MissionBrief/Panel/Margin/VBox"]
+layout_mode = 2
+text = "MISSION CONTROL // LOCAL CO-OP"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.31, 0.875, 1, 1)
+theme_override_font_sizes/font_size = 12
+
+[node name="Title" type="Label" parent="RootControl/MissionBrief/Panel/Margin/VBox"]
+layout_mode = 2
+text = "READY TO DEPLOY"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.9, 0.96, 1, 1)
+theme_override_font_sizes/font_size = 26
+
+[node name="Controls" type="Label" parent="RootControl/MissionBrief/Panel/Margin/VBox"]
+layout_mode = 2
+text = "P1  WASD  MOVE     SPACE  FIRE     X  ULTIMATE\nP2  ARROWS  MOVE     ENTER  FIRE     BACKSPACE  ULTIMATE\n\nPRESS F TO DEPLOY     •     P / ESC TO PAUSE"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.72, 0.82, 0.96, 1)
+theme_override_font_sizes/font_size = 14
+
+[node name="Note" type="Label" parent="RootControl/MissionBrief/Panel/Margin/VBox"]
+layout_mode = 2
+text = "ULTIMATE CHARGE BUILDS FROM DEFEATS — RELEASE IT WHEN THE METER IS FULL"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(1, 0.55, 0.26, 1)
+theme_override_font_sizes/font_size = 10

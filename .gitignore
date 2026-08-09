@@ -12,7 +12,8 @@ UserSettings/
 sysinfo/
 
 # Ignore auto-generated files
-*.csproj
+# Unity generates these at the repository root; the Godot C# project below is source-controlled.
+/*.csproj
 *.unityproj
 *.sln
 *.suo
@@ -50,10 +51,10 @@ Assets/AssetStoreTools*
 
 # Godot editor/import/cache files
 GodotClient/.godot/
-GodotClient/.godot/
+GodotClient/.import/
+GodotClient/.mono/
 
 # Godot C# generated project files and local build output
-GodotClient/.mono/
 GodotClient/bin/
 GodotClient/obj/
 GodotClient/*.sln

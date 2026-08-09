@@ -25,8 +25,10 @@ The Unity files under [`Assets/`](Assets/) are retained as the migration/referen
 
 | Pilot | Move | Fire |
 | --- | --- | --- |
-| Pilot One | `W A S D` | `Enter` |
-| Pilot Two | Arrow keys | `Spacebar` |
+| Pilot One | `W A S D` | `Spacebar` |
+| Pilot Two | Arrow keys | `Enter` |
+
+Pilot One releases their charged **Nova Pulse** with `X`; Pilot Two releases **Rift Collapse** with `Backspace`.
 
 Press `P` to pause or resume the mission.
 

@@ -25,8 +25,10 @@ dotnet build .\AstralRift.GodotClient.csproj
 
 | Pilot | Move | Fire |
 | --- | --- | --- |
-| Pilot One | `W A S D` | `Enter` |
-| Pilot Two | Arrow keys | `Spacebar` |
+| Pilot One | `W A S D` | `Spacebar` |
+| Pilot Two | Arrow keys | `Enter` |
+
+When the ultimate meter is full, Pilot One uses `X` for **Nova Pulse** and Pilot Two uses `Backspace` for **Rift Collapse**.
 
 Press `P` to pause or resume.
 

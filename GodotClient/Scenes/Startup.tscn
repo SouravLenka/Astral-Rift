@@ -1,0 +1,268 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://Scripts/StartupController.gd" id="1_startup"]
+[ext_resource type="Script" path="res://Scripts/StartupAudio.gd" id="2_audio"]
+
+[sub_resource type="Gradient" id="Gradient_nebula"]
+offsets = PackedFloat32Array(0, 0.38, 0.68, 1)
+colors = PackedColorArray(0.015, 0.035, 0.075, 1, 0.04, 0.13, 0.25, 1, 0.16, 0.06, 0.28, 1, 0.01, 0.02, 0.05, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture_nebula"]
+gradient = SubResource("Gradient_nebula")
+width = 1024
+height = 1024
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+fill = 1
+
+[sub_resource type="Shader" id="Shader_rift"]
+code = "shader_type canvas_item;\nuniform vec4 tint : source_color = vec4(0.3, 0.8, 1.0, 1.0);\nvoid fragment() {\n\tvec2 p = UV * 2.0 - vec2(1.0);\n\tfloat ring = smoothstep(1.0, 0.08, length(p));\n\tCOLOR = vec4(tint.rgb, tint.a * ring * ring);\n}\n"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rift_outer"]
+shader = SubResource("Shader_rift")
+shader_parameter/tint = Color(0.34, 0.12, 0.82, 0.2)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rift_mid"]
+shader = SubResource("Shader_rift")
+shader_parameter/tint = Color(0.12, 0.5, 1, 0.34)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rift_core"]
+shader = SubResource("Shader_rift")
+shader_parameter/tint = Color(0.31, 0.875, 1, 0.9)
+
+[node name="Startup" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_startup")
+
+[node name="Background" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="SpaceBackground" type="ColorRect" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.008, 0.016, 0.04, 1)
+
+[node name="NebulaGlow" type="TextureRect" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture_nebula")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="StarParticles" type="CPUParticles2D" parent="Background"]
+position = Vector2(640, 360)
+amount = 56
+lifetime = 5.5
+preprocess = 5.5
+emitting = true
+emission_shape = 3
+emission_rect_extents = Vector2(650, 370)
+direction = Vector2(0, 1)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 4.0
+scale_amount_min = 0.35
+scale_amount_max = 0.9
+color = Color(0.55, 0.8, 1, 0.34)
+
+[node name="RiftLayer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="RiftOuterGlow" type="ColorRect" parent="RiftLayer"]
+custom_minimum_size = Vector2(760, 760)
+layout_mode = 0
+offset_left = -380.0
+offset_top = -380.0
+offset_right = 380.0
+offset_bottom = 380.0
+pivot_offset = Vector2(380, 380)
+material = SubResource("ShaderMaterial_rift_outer")
+color = Color(0.34, 0.12, 0.82, 0.2)
+
+[node name="RiftMidGlow" type="ColorRect" parent="RiftLayer"]
+custom_minimum_size = Vector2(480, 480)
+layout_mode = 0
+offset_left = -240.0
+offset_top = -240.0
+offset_right = 240.0
+offset_bottom = 240.0
+pivot_offset = Vector2(240, 240)
+material = SubResource("ShaderMaterial_rift_mid")
+color = Color(0.12, 0.5, 1, 0.34)
+
+[node name="RiftCore" type="ColorRect" parent="RiftLayer"]
+custom_minimum_size = Vector2(190, 190)
+layout_mode = 0
+offset_left = -95.0
+offset_top = -95.0
+offset_right = 95.0
+offset_bottom = 95.0
+pivot_offset = Vector2(95, 95)
+material = SubResource("ShaderMaterial_rift_core")
+color = Color(0.31, 0.875, 1, 0.9)
+
+[node name="RiftParticles" type="CPUParticles2D" parent="RiftLayer"]
+amount = 72
+lifetime = 1.3
+emitting = false
+emission_shape = 1
+emission_sphere_radius = 130.0
+direction = Vector2(0, -1)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 40.0
+initial_velocity_max = 125.0
+scale_amount_min = 0.8
+scale_amount_max = 2.2
+color = Color(0.54, 0.44, 1, 0.9)
+
+[node name="BrandingLayer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -310.0
+offset_top = -100.0
+offset_right = 310.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="SoraLabel" type="Label" parent="BrandingLayer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(310, 70)
+theme_override_colors/font_color = Color(0.31, 0.875, 1, 1)
+theme_override_colors/font_shadow_color = Color(0.3, 0.3, 1, 0.85)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+theme_override_font_sizes/font_size = 74
+text = "SORA"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PresentsLabel" type="Label" parent="BrandingLayer"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -32.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.82, 0.9, 1, 0.86)
+theme_override_font_sizes/font_size = 16
+text = "P R E S E N T S"
+horizontal_alignment = 1
+
+[node name="TitleLayer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -420.0
+offset_top = -110.0
+offset_right = 420.0
+offset_bottom = 110.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="AstraLabel" type="Label" parent="TitleLayer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -28.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(420, 78)
+theme_override_colors/font_color = Color(0.62, 0.9, 1, 1)
+theme_override_colors/font_shadow_color = Color(0.4, 0.15, 1, 0.9)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 4
+theme_override_font_sizes/font_size = 62
+text = "ASTRA : RIFT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CopyrightLabel" type="Label" parent="TitleLayer"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -28.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.7, 0.82, 1, 0.75)
+theme_override_font_sizes/font_size = 13
+text = "© 2026 SORA. ALL RIGHTS RESERVED."
+horizontal_alignment = 1
+
+[node name="SkipHint" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -52.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.7, 0.84, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "PRESS ANY KEY TO SKIP"
+horizontal_alignment = 1
+
+[node name="AudioLayer" type="Node" parent="."]
+script = ExtResource("2_audio")
+
+[node name="FadeOverlay" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)

@@ -1,0 +1,22 @@
+[gd_resource type="Theme" format=3 uid="uid://ui_theme"]
+
+; ─────────────────────────────────────────────────────────────────
+; ASTRA: RIFT – Central UI Theme
+; Apply this to the root Control node of any UI scene.
+; ─────────────────────────────────────────────────────────────────
+
+; NOTE: Godot 4 Theme resources are best edited in the Godot Editor
+; Theme editor. This file sets up the baseline style boxes and colors.
+; Font paths below assume Inter-Regular.ttf and Orbitron-Bold.ttf are
+; placed in res://Assets/UI/Fonts/ after downloading from Google Fonts.
+;
+; Color Reference:
+;   Background : #08111F
+;   Panel      : #101C30
+;   Cyan (P1)  : #4FDFFF
+;   Purple (P2): #C85BFF
+;   Orange     : #FF8C42
+;   Green      : #5EFF7A
+;   Red        : #FF5252
+
+[resource]

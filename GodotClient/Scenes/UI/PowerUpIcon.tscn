@@ -1,0 +1,42 @@
+[gd_scene load_steps=2 format=3 uid="uid://powerupicon_scene"]
+
+[ext_resource type="Script" path="res://Scripts/UI/PowerUpIcon.gd" id="1"]
+
+[node name="PowerUpIcon" type="PanelContainer"]
+custom_minimum_size = Vector2(76, 72)
+offset_right = 76.0
+offset_bottom = 72.0
+script = ExtResource("1")
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="VBox" type="VBoxContainer" parent="Margin"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="NameLabel" type="Label" parent="Margin/VBox"]
+layout_mode = 2
+text = "POWER UP"
+horizontal_alignment = 1
+autowrap_mode = 2
+theme_override_colors/font_color = Color(0.31, 0.875, 1, 1)
+theme_override_font_sizes/font_size = 9
+
+[node name="TimerLabel" type="Label" parent="Margin/VBox"]
+layout_mode = 2
+text = "5.0s"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(1, 0.55, 0.26, 1)
+theme_override_font_sizes/font_size = 12
+
+[node name="Progress" type="ProgressBar" parent="Margin/VBox"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+max_value = 100.0
+value = 100.0
+show_percentage = false
